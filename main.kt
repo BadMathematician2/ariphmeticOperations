@@ -1,7 +1,11 @@
 import kotlin.math.max
 
 fun main(){
-    val x: Operations = Operations("1515","9955")
+
+
+    val s1: String = readLine()!!
+    val s2 = readLine()!!
+    val x: Operations = Operations(s1,s2)
     println(x.sumStrings())
 
 
