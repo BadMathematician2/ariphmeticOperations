@@ -6,7 +6,7 @@ class Operations(val st1:String, val st2: String) {
     private val n = st1.length; private val m = st2.length
     private var N = max(n,m)
 
-    fun sumStringsInt(): String{
+    private fun sumStringsInt(): String{
 
         var z= Array( 3) {IntArray(N+1) {0} }
         for (i in 0 until n)
@@ -34,7 +34,7 @@ class Operations(val st1:String, val st2: String) {
     }
 
 
-    fun sumStringsDouble(): String
+    private fun sumStringsDouble(): String
     {
 
 
@@ -42,13 +42,14 @@ class Operations(val st1:String, val st2: String) {
                                                                                                 // 2,3 - ціла і дробова частина першого числа
         for (i in st1.substringBefore('.').indices)                               // 4,5 - ціла і дробова частина другого числа
           z[2][i] = charToInt(st1[st1.substringBefore('.').length - 1 - i])
-
+        if (!intOrDouble(st1))
         for (i in st1.substringAfter('.').indices)                        // 4,5 - ціла і дробова частина другого числа
             z[3][i] = charToInt(st1.substringAfter('.')[i])
 
 
         for (i in st2.substringBefore('.').indices)                               // 4,5 - ціла і дробова частина другого числа
             z[4][i] = charToInt(st2[st2.substringBefore('.').length-1-i])
+        if (!intOrDouble(st2))
         for (i in st2.substringAfter('.').indices)                               // 4,5 - ціла і дробова частина другого числа
             z[5][i] = charToInt(st2.substringAfter('.')[i])
          var whole = max(st1.substringBefore('.').length,st2.substringBefore('.').length)
@@ -88,9 +89,16 @@ class Operations(val st1:String, val st2: String) {
         return "$s1.$s2"
     }
 
+    fun sum():String{
+        if (intOrDouble(st1)&&intOrDouble(st2))
+            return sumStringsInt()
+        else return sumStringsDouble()
+    }
 
-
-
+    private fun intOrDouble(s:String):Boolean{
+        return s.all{
+            it.isDigit()}
+    }
 
     private fun charToInt(c: Char):Int {
         val x = c.toInt()
@@ -110,18 +118,18 @@ class Operations(val st1:String, val st2: String) {
     }
 
     private fun intToString(i: Int):String{
-        when (i){
-            0 -> return "0"
-            1 -> return "1"
-            2 -> return "2"
-            3 -> return "3"
-            4 -> return "4"
-            5 -> return "5"
-            6 -> return "6"
-            7 -> return "7"
-            8 -> return "8"
-            9 -> return "9"
-            else -> return "Not number"
+        return when (i){
+            0 -> "0"
+            1 -> "1"
+            2 -> "2"
+            3 -> "3"
+            4 -> "4"
+            5 -> "5"
+            6 -> "6"
+            7 -> "7"
+            8 -> "8"
+            9 -> "9"
+            else -> "Not number"
         }
 
     }
