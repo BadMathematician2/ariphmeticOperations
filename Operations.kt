@@ -3,15 +3,15 @@ import kotlin.math.max
 class Operations(val st1:String, val st2: String) {
 
 
+    private val n = st1.length; private val m = st2.length
+    private var N = max(n,m)
 
+    fun sumStringsInt(): String{
 
-    fun sumStrings(): String{
-        val n = st1.length; val m = st2.length
-        var N = max(n,m)
-        var z= Array( 3, {IntArray(N+1,{0}) } )
-        for (i in 0..n-1)
+        var z= Array( 3) {IntArray(N+1) {0} }
+        for (i in 0 until n)
             z[1][i] = charToInt(st1[n-1-i])
-        for (i in 0..m-1)
+        for (i in 0 until m)
             z[2][i] = charToInt(st2[m-1-i])
         var t = 0
         for (i in 0 until N) if (z[1][i] + z[2][i] + t >= 10) {
@@ -19,7 +19,7 @@ class Operations(val st1:String, val st2: String) {
             t = 1
             if (i == N-1)
             {
-                N = N+1
+                N += 1
                 z[0][N-1] = 1;
             }
         } else {
@@ -34,13 +34,65 @@ class Operations(val st1:String, val st2: String) {
     }
 
 
+    fun sumStringsDouble(): String
+    {
+
+
+        var z= Array( 6) {IntArray(N+1) {0} }  // 0, 1 ціла і дробова частина результату;
+                                                                                                // 2,3 - ціла і дробова частина першого числа
+        for (i in st1.substringBefore('.').indices)                               // 4,5 - ціла і дробова частина другого числа
+          z[2][i] = charToInt(st1[st1.substringBefore('.').length - 1 - i])
+
+        for (i in st1.substringAfter('.').indices)                        // 4,5 - ціла і дробова частина другого числа
+            z[3][i] = charToInt(st1.substringAfter('.')[i])
+
+
+        for (i in st2.substringBefore('.').indices)                               // 4,5 - ціла і дробова частина другого числа
+            z[4][i] = charToInt(st2[st2.substringBefore('.').length-1-i])
+        for (i in st2.substringAfter('.').indices)                               // 4,5 - ціла і дробова частина другого числа
+            z[5][i] = charToInt(st2.substringAfter('.')[i])
+         var whole = max(st1.substringBefore('.').length,st2.substringBefore('.').length)
+        val frac = max(st1.substringAfter('.').length,st2.substringAfter('.').length)
+
+
+        var t = 0
+        for (i in frac-1 downTo 0) if (z[3][i] + z[5][i] + t >= 10) {
+            z[1][i] = (z[3][i] + z[5][i] + t) % 10
+            t = 1
+        }
+        else {
+            z[1][i] = z[3][i] + z[5][i] + t
+            t = 0
+        }
+        for (i in 0 until whole) if (z[2][i] + z[4][i] + t >= 10) {
+            z[0][i] = (z[2][i] + z[4][i] + t) % 10
+            t = 1
+            if (i == whole-1)
+            {
+                whole += 1
+                z[0][whole-1] = 1;
+            }
+        } else {
+            z[0][i] = z[2][i] + z[4][i] + t
+            t = 0
+        }
+
+        var s1 = ""; var s2 = ""
+        for (i in 0 until whole)
+            s1 += intToString(z[0][whole - 1 - i])
+
+        for (i in 0 until frac)
+            s2 += intToString(z[1][i])
+
+
+        return "$s1.$s2"
+    }
 
 
 
 
 
-
-   private fun charToInt(c: Char):Int {
+    private fun charToInt(c: Char):Int {
         val x = c.toInt()
         when (x){
             48 -> return 0
@@ -73,4 +125,6 @@ class Operations(val st1:String, val st2: String) {
         }
 
     }
+
+
 }
