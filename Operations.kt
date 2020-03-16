@@ -1,13 +1,11 @@
 import kotlin.math.max
 
-class Operations(val st1:String, val st2: String) {
+class Operations() {
 
+    private fun sumStringsInt(st1:String,  st2: String): String{
 
-    private val n = st1.length; private val m = st2.length
-    private var N = max(n,m)
-
-    private fun sumStringsInt(): String{
-
+        val n = st1.length; val m = st2.length
+        var N = max(n,m)
         var z= Array( 3) {IntArray(N+1) {0} }
         for (i in 0 until n)
             z[1][i] = charToInt(st1[n-1-i])
@@ -34,10 +32,11 @@ class Operations(val st1:String, val st2: String) {
     }
 
 
-    private fun sumStringsDouble(): String
+    private fun sumStringsDouble(st1:String,  st2: String): String
     {
 
-
+        val n = st1.length; val m = st2.length
+        var N = max(n,m)
         var z= Array( 6) {IntArray(N+1) {0} }  // 0, 1 ціла і дробова частина результату;
                                                                                                 // 2,3 - ціла і дробова частина першого числа
         for (i in st1.substringBefore('.').indices)                               // 4,5 - ціла і дробова частина другого числа
@@ -89,10 +88,20 @@ class Operations(val st1:String, val st2: String) {
         return "$s1.$s2"
     }
 
-    fun sum():String{
+    fun sum(st1:String,  st2: String):String{
         if (intOrDouble(st1)&&intOrDouble(st2))
-            return sumStringsInt()
-        else return sumStringsDouble()
+            return sumStringsInt(st1, st2)
+        else return sumStringsDouble(st1,st2)
+    }
+
+    fun multipli(st1: String, st2: String):String{
+        var qual = "1"
+        var s = st1
+        while (qual!=st2){
+            qual = sum(qual,"1")
+            s = sum(s, st1)
+        }
+        return s
     }
 
     private fun intOrDouble(s:String):Boolean{
